@@ -4,6 +4,9 @@ on:
   pull_request:
     branches:
       - master
+  push:
+    tags:
+      - dev-*
 
 env:
   REGISTRY: ghcr.io
@@ -31,6 +34,9 @@ jobs:
         uses: docker/metadata-action@master
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: | 
+            type=ref, prefix=prerelease-, event=pr
+            type=ref, event=tag
       
       - name: Build and push Docker image
         uses: docker/build-push-action@master
@@ -39,3 +45,5 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outouts.labels }}
+          
+  

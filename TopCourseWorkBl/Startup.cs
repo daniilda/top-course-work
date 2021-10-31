@@ -21,7 +21,7 @@ namespace TopCourseWorkBl
         public void ConfigureServices(IServiceCollection services)
         {
             var type = typeof(Startup);
-            //TEST CHANGE
+
             services
                 .AddSwaggerGen()
                 .AddMediatR(type)

@@ -21,4 +21,4 @@ jobs:
       - uses: actions/setup-dotnet@v1
         with:
          dotnet-version: '5.0.x'
-      - run: dotnet tests
+      - run: dotnet test

@@ -1,4 +1,4 @@
-name: Dotnet Projects Workflow
+name: Build and Test
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - '*'
 
 jobs:
-  build_and_test:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -14,4 +14,11 @@ jobs:
         with:
           dotnet-version: '5.0.x'
       - run: dotnet build
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-dotnet@v1
+        with:
+         dotnet-version: '5.0.x'
       - run: dotnet tests

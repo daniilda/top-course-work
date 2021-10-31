@@ -1,0 +1,41 @@
+name: Docker Build&Push
+  
+on:
+  pull_request:
+    branches:
+      - master
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: topcwbl  # ${{ github.repository }}
+  
+jobs:
+  build-and-push-image:
+    runs-on: ubuntu-latest
+    permissions: 
+      contents: read
+      packages: write
+      
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        
+      - name: Log in to the registry
+        uses: docker/login-action@master
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ sectrets.GITHUB_TOKEN }}
+          
+      - name: Extract metadata
+        uses: docker/metadata-action@master
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+      
+      - name: Build and push Docker image
+        uses: docker/build-push-action@master
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outouts.labels }}

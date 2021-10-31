@@ -14,4 +14,4 @@ jobs:
         with:
           dotnet-version: '5.0.x'
       - run: dotnet build
-      - run: dotnet tests
+      - run: dotnet test

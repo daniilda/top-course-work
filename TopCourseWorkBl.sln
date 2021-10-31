@@ -8,6 +8,9 @@ ProjectSection(SolutionItems) = preProject
 	.dockerignore = .dockerignore
 	.gitignore = .gitignore
 	README.md = README.md
+	.github\workflows\integrate.yml = .github\workflows\integrate.yml
+	docker-compose.yml = docker-compose.yml
+	.env = .env
 EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{59CE780A-0868-4BC6-AA96-2B83F941EE44}"

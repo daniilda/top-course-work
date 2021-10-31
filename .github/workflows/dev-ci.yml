@@ -1,9 +1,9 @@
-name: Build and Test
+name: Development
 
 on:
   push:
     branches: 
-      - '*'
+      - 'DEV-*'
 
 jobs:
   build:

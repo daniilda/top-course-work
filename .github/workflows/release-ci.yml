@@ -1,5 +1,5 @@
 name: Release
-  
+
 on:
   pull_request:
     branches:
@@ -13,7 +13,7 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: topcwbl  # ${{ github.repository }}
-  
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -31,35 +31,35 @@ jobs:
       - uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '5.0.x'
-    - run: dotnet test
+      - run: dotnet test
   publish-docker-image:
-    needs: test 
+    needs: test
     runs-on: ubuntu-latest
-    permissions: 
+    permissions:
       contents: read
       packages: write
-      
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-        
+
       - name: Log in to the registry
         uses: docker/login-action@master
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-          
+
       - name: Extract metadata
         uses: docker/metadata-action@master
         id: meta
         with:
           images: ${{ env.REGISTRY }}/${{ github.actor }}/${{ env.IMAGE_NAME }}
-          tags: | 
+          tags: |
             type=ref, prefix=prerelease-, event=pr
             type=ref, event=tag
             type=ref, event=branch
-      
+
       - name: Build and push Docker image
         uses: docker/build-push-action@master
         with:

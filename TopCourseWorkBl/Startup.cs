@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using TopCourseWorkBl.DataLayer;
 
 namespace TopCourseWorkBl
 {
@@ -26,9 +27,12 @@ namespace TopCourseWorkBl
                 .AddSwaggerGen()
                 .AddMediatR(type)
                 .AddAutoMapper(type)
-                .AddHttpContextAccessor();
+                .AddHttpContextAccessor()
+                .AddSingleton<HttpCancellationTokenAccessor>()
+                .AddDatabaseInfrastructure(_configuration);
 
             services.AddControllers();
+            
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -40,14 +44,14 @@ namespace TopCourseWorkBl
                 .UseSwagger()
                 .UseSwaggerUI(opt 
                     => opt.SwaggerEndpoint("/swagger/v1/swagger.json", "TOPCourseworkBL"));
-            
-            //app.UseHttpsRedirection(); //TODO: delete when get cert.
 
             app.UseRouting();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
+
+            app.Migrate();
         }
     }
 }

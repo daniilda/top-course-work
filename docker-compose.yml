@@ -1,15 +1,19 @@
 version: "3.9"
 services:
   app:
-    image: ghcr.io/daniilda/topcwbl:latest
+    #image: ghcr.io/daniilda/topcwbl:${VERSION_TAG}
+    build: .
     environment:
-      - DB_USER=&{DB_USER}
-      - DB_PASSWORD=&{DB_PASSWORD}
-      - DB_NAME=&{DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+      - ASPNETCORE_ENVIRONMENT=${ENVIRONMENT}
     ports:
       - "5001:80"
     links:
-      - postgresql_db:database
+      - postgresql_db:${DB_HOST}
+    depends_on:
+      - postgresql_db
   postgresql_db:
     image: postgres:latest
     environment:
@@ -28,7 +32,7 @@ services:
     ports:
       - "5011:80"
     links:
-      - postgresql_db:database
+      - postgresql_db:${DB_HOST}
     restart: always
     volumes:
       - "pgadmin:/root/.pgadmin"

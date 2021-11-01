@@ -1,4 +1,4 @@
-name: Release
+name: release
 
 on:
   pull_request:
@@ -58,6 +58,7 @@ jobs:
             type=ref, prefix=prerelease-, event=pr
             type=ref, event=tag
             type=ref, event=branch
+            type=raw, value=prerelease-latest
 
       - name: Build and push Docker image
         uses: docker/build-push-action@master

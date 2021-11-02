@@ -1,4 +1,4 @@
-name: Release
+name: release
 
 on:
   pull_request:
@@ -32,7 +32,7 @@ jobs:
           dotnet-version: '5.0.x'
       - run: dotnet test
   publish-docker-image:
-    needs: [build, test]
+    needs: [ build, test ]
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -58,6 +58,7 @@ jobs:
             type=ref, prefix=prerelease-, event=pr
             type=ref, event=tag
             type=ref, event=branch
+            type=raw, value=prerelease-latest
 
       - name: Build and push Docker image
         uses: docker/build-push-action@master
@@ -66,5 +67,23 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outouts.labels }}
-          
-  
+
+  creating-release:
+    if: github.event.pull_request.merged == 'true'
+    needs: publish-docker-image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create tag name
+        uses: ASzc/change-string-case-action@v1
+        id: string
+        with:
+          string: ${{ github.head_ref }}
+      - name: Create & Push release tag
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          uses: anothrNick/github-tag-action@1.36.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CUSTOM_TAG: ${{ steps.string.outputs.lowercase }}
+    

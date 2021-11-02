@@ -1,9 +1,12 @@
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using TopCourseWorkBl.DataLayer;
+using TopCourseWorkBl.DataLayer.Extensions;
 
 namespace TopCourseWorkBl
 {
@@ -26,7 +29,9 @@ namespace TopCourseWorkBl
                 .AddSwaggerGen()
                 .AddMediatR(type)
                 .AddAutoMapper(type)
-                .AddHttpContextAccessor();
+                .AddHttpContextAccessor()
+                .AddSingleton<HttpCancellationTokenAccessor>()
+                .AddDatabaseInfrastructure(_configuration);
 
             services.AddControllers();
         }
@@ -38,16 +43,17 @@ namespace TopCourseWorkBl
 
             app
                 .UseSwagger()
-                .UseSwaggerUI(opt 
+                .UseSwaggerUI(opt
                     => opt.SwaggerEndpoint("/swagger/v1/swagger.json", "TOPCourseworkBL"));
-            
-            //app.UseHttpsRedirection(); //TODO: delete when get cert.
 
             app.UseRouting();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
+
+
+            app.Migrate();
         }
     }
 }

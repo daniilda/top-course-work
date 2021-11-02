@@ -76,7 +76,7 @@ jobs:
       - name: Create tag name
         uses: ASzc/change-string-case-action@v1
         id: string
-          - with:
+        with:
           string: ${{ github.head_ref }}
       - name: Create & Push release tag
         uses: actions/checkout@v2

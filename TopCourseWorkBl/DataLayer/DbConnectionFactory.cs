@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
+using TopCourseWorkBl.DataLayer.Extensions;
 
 namespace TopCourseWorkBl.DataLayer
 {
@@ -18,7 +19,7 @@ namespace TopCourseWorkBl.DataLayer
             _configuration = configuration;
         }
 
-        public async Task<DatabaseWrapper> CreateDatabaseAsync(CancellationToken? cancellationToken = default)
+        public DatabaseWrapper CreateDatabase(CancellationToken? cancellationToken = default)
             => new(
                  new NpgsqlConnection(_configuration.GetPostgresConnectionString()),
                  cancellationToken ?? _cancellationTokenAccessor.Token);

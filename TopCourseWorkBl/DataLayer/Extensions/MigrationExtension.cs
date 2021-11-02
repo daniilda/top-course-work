@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace TopCourseWorkBl.DataLayer
+namespace TopCourseWorkBl.DataLayer.Extensions
 {
     public static class MigrationExtension
     {

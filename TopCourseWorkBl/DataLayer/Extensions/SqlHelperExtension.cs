@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 
-namespace TopCourseWorkBl.DataLayer
+namespace TopCourseWorkBl.DataLayer.Extensions
 {
     public static class SqlHelperExtension
     {

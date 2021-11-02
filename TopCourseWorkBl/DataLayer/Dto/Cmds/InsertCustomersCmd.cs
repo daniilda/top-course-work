@@ -1,4 +1,4 @@
-﻿namespace TopCourseWorkBl.DataLayer.Dto
+﻿namespace TopCourseWorkBl.DataLayer.Dto.Cmds
 {
     public class InsertCustomersCmd
     {

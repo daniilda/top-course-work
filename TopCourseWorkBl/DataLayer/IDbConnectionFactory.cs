@@ -5,6 +5,6 @@ namespace TopCourseWorkBl.DataLayer
 {
     public interface IDbConnectionFactory
     {
-        Task<DatabaseWrapper> CreateDatabaseAsync(CancellationToken? cancellationToken = default);
+        DatabaseWrapper CreateDatabase(CancellationToken? cancellationToken = default);
     }
 }

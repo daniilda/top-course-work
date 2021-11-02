@@ -74,16 +74,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Create tag name
-      uses: ASzc/change-string-case-action@v1
-      id: string
-        - with:
-            string: ${{ github.head_ref }}
-        - name: Create & Push release tag
-      uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
-        uses: anothrNick/github-tag-action@1.36.0
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        CUSTOM_TAG: ${{ steps.string.outputs.lowercase }}
+        uses: ASzc/change-string-case-action@v1
+        id: string
+          - with:
+          string: ${{ github.head_ref }}
+      - name: Create & Push release tag
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          uses: anothrNick/github-tag-action@1.36.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CUSTOM_TAG: ${{ steps.string.outputs.lowercase }}
     

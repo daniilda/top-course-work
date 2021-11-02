@@ -32,7 +32,7 @@ jobs:
           dotnet-version: '5.0.x'
       - run: dotnet test
   publish-docker-image:
-    needs: [build, test]
+    needs: [ build, test ]
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -67,7 +67,7 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outouts.labels }}
-          
+
   creating-release:
     if: github.event.pull_request.merged == 'true'
     needs: publish-docker-image
@@ -76,9 +76,9 @@ jobs:
       - name: Create tag name
       uses: ASzc/change-string-case-action@v1
       id: string
-      - with: 
-          string: ${{ github.head_ref }}
-      - name: Create & Push release tag
+        - with:
+            string: ${{ github.head_ref }}
+        - name: Create & Push release tag
       uses: actions/checkout@v2
       with:
         fetch-depth: 0

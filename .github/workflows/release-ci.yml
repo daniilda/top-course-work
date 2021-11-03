@@ -69,7 +69,7 @@ jobs:
           labels: ${{ steps.meta.outouts.labels }}
 
   creating-release:
-    if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
+    if: ${{ github.event.pull_request.merged == true }}
     needs: publish-docker-image
     runs-on: ubuntu-latest
     steps:

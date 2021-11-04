@@ -55,12 +55,11 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ github.actor }}/${{ env.IMAGE_NAME }}
           tags: |
-            type=ref, prefix=prerelease-, event=pr
             type=ref, event=tag
             type=ref, event=branch
             type=raw, value=prerelease-latest
 
-      - name: Build and push Docker image
+      - name: Build and Push Docker image
         uses: docker/build-push-action@master
         with:
           context: .

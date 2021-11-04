@@ -47,10 +47,10 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
           
-      - uses: mdecoleman/pr-branch-name@1.0.1
+      - name: BranchName
         id: branch-name
         env:
-          BRANCH_REF: ${{github.head_ref}}
+          BRANCH_REF: ${{github.head_ref}} 
         run: |
           echo ::set-output name=current_branch::${BRANCH_REF#refs/*/} 
           

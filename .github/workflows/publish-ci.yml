@@ -5,15 +5,15 @@ on: workflow_dispatch #change to PR closed
 jobs:
   create-tag:
     runs-on: ubuntu-latest
-    env: 
-      TAG_NAME: _
     steps:
       - name: Get branch name
         id: branch-name
         uses: tj-actions/branch-names@v5
       - name: To lowercase
-        run: |
-          TAG_NAME=$(echo ${{ steps.branch-name.outputs.current_branch }} | tr '[A-Z]' '[a-z]')
+        id: string
+        uses: ASzc/change-string-case-action@v1
+        with:
+          string: ${{ steps.branch-name.outputs.current_branch }}
       - name: Create & Push release tag
         uses: actions/checkout@v2
         with:
@@ -21,4 +21,4 @@ jobs:
       - uses: anothrNick/github-tag-action@1.36.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          CUSTOM_TAG: ${{ env.TAG_NAME }}
+          CUSTOM_TAG: ${{ steps.string.outputs.lowercase }}

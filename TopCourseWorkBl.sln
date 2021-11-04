@@ -9,10 +9,12 @@ ProjectSection(SolutionItems) = preProject
 	.gitignore = .gitignore
 	README.md = README.md
 	docker-compose.yml = docker-compose.yml
-	.github\workflows\dev-ci.yml = .github\workflows\dev-ci.yml
-	.github\workflows\release-ci.yml = .github\workflows\release-ci.yml
+	.github\workflows\dev.yml = .github\workflows\dev.yml
+	.github\workflows\dev-deploy.yml = .github\workflows\dev-deploy.yml
+	.github\workflows\prerelease.yml = .github\workflows\prerelease.yml
+	.github\workflows\release.yml = .github\workflows\release.yml
+	.github\workflows\personal-dev-deploy.yml = .github\workflows\personal-dev-deploy.yml
 	.env = .env
-	.github\workflows\publish-ci.yml = .github\workflows\publish-ci.yml
 EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{59CE780A-0868-4BC6-AA96-2B83F941EE44}"

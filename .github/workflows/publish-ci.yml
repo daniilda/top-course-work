@@ -5,6 +5,8 @@ on: workflow_dispatch #change to PR closed
 jobs:
   create-tag:
     runs-on: ubuntu-latest
+    env: 
+      TAG_NAME: _
     steps:
       - name: Get branch name
         id: branch-name

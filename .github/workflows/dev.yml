@@ -5,6 +5,10 @@ on:
     branches: 
       - 'DEV-*'
 
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: topcwbl  # ${{ github.repository }}
+
 jobs:
   build:
     runs-on: ubuntu-latest

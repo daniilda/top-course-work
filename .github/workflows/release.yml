@@ -1,0 +1,96 @@
+name: Release
+
+on:    
+  pull_request:
+    branches:
+      - master
+    types:
+      - closed
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '5.0.x'
+      - run: dotnet build
+        
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '5.0.x'
+      - run: dotnet test
+  
+  publish-docker-image:
+    needs: [ build, test ]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        
+      - name: Log in to the registry
+        uses: docker/login-action@master
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          
+      - uses: mdecoleman/pr-branch-name@1.0.1
+        id: branch-name
+        env:
+          BRANCH_REF: ${{github.head_ref}}
+        run: |
+          echo ::set-output name=current_branch::${BRANCH_REF#refs/*/} 
+          
+      - name: To lowercase
+        id: string
+        uses: ASzc/change-string-case-action@v1
+        with:
+          string: ${{ steps.branch-name.outputs.current_branch }}
+            
+      - name: Extract metadata
+        uses: docker/metadata-action@master
+        id: meta
+        with:
+          images: ${{ env.REGISTRY }}/daniilda/${{ env.IMAGE_NAME }}
+          tags: |
+            type=raw, value=latest
+            type=raw, value=prerelease-latest
+            type=raw, value=${{ steps.string.outputs.lowercase }}
+
+      - name: Build and Push Docker image
+        uses: docker/build-push-action@master
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outouts.labels }}
+          
+  create-tag:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get branch name
+        id: branch-name
+        uses: tj-actions/branch-names@v5
+      - name: To lowercase
+        id: string
+        uses: ASzc/change-string-case-action@v1
+        with:
+          string: ${{ steps.branch-name.outputs.current_branch }}
+      - name: Create & Push release tag
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ steps.branch-name.outputs.current_branch }}
+          fetch-depth: '0'
+      - uses: anothrNick/github-tag-action@1.36.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CUSTOM_TAG: ${{ steps.string.outputs.lowercase }}

@@ -1,18 +1,9 @@
-name: release
+name: Development
 
 on:
-  pull_request:
-    branches:
-      - master
   push:
-    tags:
-      - dev-*
-    branches:
-      - master
-
-env:
-  REGISTRY: ghcr.io
-  IMAGE_NAME: topcwbl  # ${{ github.repository }}
+    branches: 
+      - 'DEV-*'
 
 jobs:
   build:
@@ -23,21 +14,22 @@ jobs:
         with:
           dotnet-version: '5.0.x'
       - run: dotnet build
+        
   test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '5.0.x'
+         dotnet-version: '5.0.x'
       - run: dotnet test
+      
   publish-docker-image:
     needs: [ build, test ]
     runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -53,11 +45,9 @@ jobs:
         uses: docker/metadata-action@master
         id: meta
         with:
-          images: ${{ env.REGISTRY }}/${{ github.actor }}/${{ env.IMAGE_NAME }}
+          images: ${{ env.REGISTRY }}/daniilda/${{ env.IMAGE_NAME }}
           tags: |
-            type=ref, event=tag
-            type=ref, event=branch
-            type=raw, value=prerelease-latest
+            type=raw, velue=dev-${{github.actor}}
 
       - name: Build and Push Docker image
         uses: docker/build-push-action@master

@@ -12,7 +12,12 @@ env:
   IMAGE_NAME: topcwbl  # ${{ github.repository }}
 
 jobs:
+  check:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
+
   build:
+    needs: check
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -22,6 +27,7 @@ jobs:
       - run: dotnet build
         
   test:
+    needs: check
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -79,6 +85,7 @@ jobs:
           labels: ${{ steps.meta.outouts.labels }}
           
   create-tag:
+    needs: publish-docker-image
     runs-on: ubuntu-latest
     steps:
       - name: Get branch name

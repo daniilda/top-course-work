@@ -29,5 +29,6 @@ namespace TopCourseWorkBl.DataLayer
             await using var db = _connectionFactory.CreateDatabase(cancellationToken);
             return (await db.Connection.QueryAsync<T>(db.CreateCommand(query, parameters))).ToArray();
         }
+        
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace TopCourseWorkBl.DataLayer.Dto
+﻿namespace TopCourseWorkBl.Dtos
 {
     public class Type
     {

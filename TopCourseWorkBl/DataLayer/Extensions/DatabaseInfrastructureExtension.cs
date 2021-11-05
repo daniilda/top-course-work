@@ -12,6 +12,7 @@ namespace TopCourseWorkBl.DataLayer.Extensions
              services
                 .AddSingleton<IDbConnectionFactory, DbConnectionFactory>()
                 .AddSingleton<MainRepository>()
+                .AddSingleton<AuthRepository>()
                 .AddSingleton<DbExecuteWrapper>();
 
              return services.AddFluentMigratorCore()

@@ -1,7 +1,8 @@
+#docker-compose file for dev server
 version: "3.9"
 services:
   app:
-    build: .
+    image: ghcr.io/daniilda/topcwbl:${VERSION_TAG}
     environment:
       - DB_USER=${DB_USER}
       - DB_PASSWORD=${DB_PASSWORD}
@@ -24,7 +25,7 @@ services:
     restart: always
     volumes:
       - "database-data:/var/lib/postgresql/data/"
-    
+
   pgadmin:
     image: dpage/pgadmin4
     environment:
@@ -37,7 +38,7 @@ services:
     restart: always
     volumes:
       - "pgadmin:/root/.pgadmin"
-      
+
 volumes:
   database-data:
   pgadmin:

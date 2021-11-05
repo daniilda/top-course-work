@@ -1,12 +1,17 @@
+using System;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using TopCourseWorkBl.DataLayer;
+using Microsoft.IdentityModel.Tokens;
+using TopCourseWorkBl.AuthenticationLayer;
+using TopCourseWorkBl.AuthenticationLayer.Extensions;
 using TopCourseWorkBl.DataLayer.Extensions;
+using TopCourseWorkBl.Extensions;
+using static TopCourseWorkBl.EnvironmentConstants;
 
 namespace TopCourseWorkBl
 {
@@ -26,7 +31,7 @@ namespace TopCourseWorkBl
             var type = typeof(Startup);
 
             services
-                .AddSwaggerGen()
+                .AddSwagger()
                 .AddMediatR(type)
                 .AddAutoMapper(type)
                 .AddHttpContextAccessor()
@@ -34,6 +39,33 @@ namespace TopCourseWorkBl
                 .AddDatabaseInfrastructure(_configuration);
 
             services.AddControllers();
+
+            var authOptions = _configuration
+                .GetSection(nameof(AuthOptions))
+                .Get<AuthOptions>();
+
+            services.AddOptions<AuthOptions>()
+                .Configure(opt => _configuration
+                    .GetSection(nameof(AuthOptions))
+                    .Bind(opt));
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.RequireHttpsMetadata = false;
+                    options.SaveToken = true;
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = false,
+                        ValidateAudience = false,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = _configuration[AuthKey] is null
+                            ? "defaultKeyqweqweqweqweqweqweqweqweqweqwe".GetSymmetricSecurityKey()
+                            : _configuration[AuthKey].GetSymmetricSecurityKey(),
+                        ClockSkew = TimeSpan.Zero
+                    };
+                });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -44,15 +76,24 @@ namespace TopCourseWorkBl
             app
                 .UseSwagger()
                 .UseSwaggerUI(opt
-                    => opt.SwaggerEndpoint("/swagger/v1/swagger.json", "TOPCourseworkBL"));
+                    =>
+                {
+                    opt.SwaggerEndpoint("/swagger/v1/swagger.json", "TOPCourseworkBL");
+                    opt.RoutePrefix = string.Empty;
+                });
 
             app.UseRouting();
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
 
+            app.UseCors(x => x
+                .SetIsOriginAllowed(origin => true)
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowCredentials());
+            
+            app.UseAuthentication();
+            app.UseAuthorization();
 
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
             app.Migrate();
         }
     }

@@ -1,5 +1,5 @@
 # Technologies Of Programming Course Work
-##BusinessLayer (a.k.a back-end)
+## BusinessLayer (a.k.a back-end)
 
 :shipit: HOW TO RUN:
 
@@ -21,8 +21,11 @@ DB_HOST=database #DB host link as here will be (database:5432)
 AUTH_KEY=somerandomkeyforjwttokens #Key for JWT auth service
 ```
 
-###Booting up
+### Booting up
 To boot up the application type in the terminal:<br/>
 :red_circle: `docker compose up`  which uses default `docker-compose.yml` config (use it for local development).<br/>
 :orange_circle: `docker compose up -f docker-compose.dev.yml` which uses dev `docker-compose.dev.yml` config (use it for dev testing on server)<br/>
 :green_circle: `docker compose up -f docker-compose.prod.yml` which uses prod `docker-compose.prod.yml` config (use it for production)
+
+### API deployments
+[:whale: Prerelease deploy](http://api.top-course-work.dev.daniilda.xyz/index.html)

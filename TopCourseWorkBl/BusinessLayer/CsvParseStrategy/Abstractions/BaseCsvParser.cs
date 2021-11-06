@@ -7,7 +7,7 @@
         public IParseStrategy SetNext(IParseStrategy nextStrategy)
             => _nextStrategy = nextStrategy;
 
-        public abstract (CsvParserResponse?, IParseStrategy) Parse(IParseData parseData);
+        public abstract (CsvParserResponse?, IParseStrategy) Parse(IParseData? parseData);
 
         protected (CsvParserResponse?, IParseStrategy) ParseNext(IParseData parseData)
             => _nextStrategy?.Parse(parseData) ?? (null, this);

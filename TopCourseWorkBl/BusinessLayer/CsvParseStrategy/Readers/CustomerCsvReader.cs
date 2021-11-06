@@ -10,10 +10,10 @@ namespace TopCourseWorkBl.BusinessLayer.CsvParseStrategy.Readers
 {
     public class CustomerCsvReader : BaseCsvParser
     {
-        public override (CsvParserResponse?, IParseStrategy) Parse(IParseData parseData)
+        public override (CsvParserResponse?, IParseStrategy) Parse(IParseData? parseData)
         {
-            var data = parseData.ThrowIfIncorrectType<CsvParserResponse>();
-            var (returnData, parser) = ParseNext(parseData);
+            var data = parseData!.ThrowIfIncorrectType<CsvParserResponse>();
+            var (returnData, parser) = ParseNext(parseData!);
             parser = returnData is null 
                 ? this 
                 : parser;

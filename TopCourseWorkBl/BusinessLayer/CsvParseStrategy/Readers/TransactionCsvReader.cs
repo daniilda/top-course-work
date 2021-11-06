@@ -1,18 +1,19 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using CsvHelper;
-using TopCourseWorkBl.BusinessLayer.CsvParseStrategy;
 using TopCourseWorkBl.BusinessLayer.CsvParseStrategy.Abstractions;
 using TopCourseWorkBl.BusinessLayer.Extensions;
 using TopCourseWorkBl.Dtos;
 
-namespace TopCourseWorkBl.BusinessLayer.CsvReadChain.Readers
+namespace TopCourseWorkBl.BusinessLayer.CsvParseStrategy.Readers
 {
     public class TransactionCsvReader : BaseCsvParser
     {
-        public override (CsvParserResponse?, IParseStrategy) Parse(IParseData parseData)
+        public override (CsvParserResponse?, IParseStrategy) Parse(IParseData? parseData)
         {
+            if (parseData == null) throw new ArgumentNullException(nameof(parseData));
             var data = parseData.ThrowIfIncorrectType<CsvParserResponse>();
             var (returnData, parser) = ParseNext(parseData);
             parser = returnData is null 

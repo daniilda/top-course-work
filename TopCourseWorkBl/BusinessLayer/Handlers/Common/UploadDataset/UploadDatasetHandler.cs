@@ -9,7 +9,6 @@ using TopCourseWorkBl.AuthenticationLayer.Exceptions;
 using TopCourseWorkBl.BusinessLayer.CheckStrategy;
 using TopCourseWorkBl.BusinessLayer.CsvParseStrategy;
 using TopCourseWorkBl.BusinessLayer.CsvParseStrategy.Readers;
-using TopCourseWorkBl.BusinessLayer.CsvReadChain.Readers;
 using TopCourseWorkBl.BusinessLayer.Extensions;
 using TopCourseWorkBl.DataLayer;
 using TopCourseWorkBl.DataLayer.Cmds.Main;
@@ -43,7 +42,7 @@ namespace TopCourseWorkBl.BusinessLayer.Handlers.Common.UploadDataset
                     File.Delete(dataSet!.Path);
                 }
             }
-            catch (Exception ex)
+            catch
             {
                 File.Delete(dataSet!.Path);
                 throw new BadRequestException("Wrong data format!");

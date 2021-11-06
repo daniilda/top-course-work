@@ -10,7 +10,6 @@ ProjectSection(SolutionItems) = preProject
 	README.md = README.md
 	docker-compose.yml = docker-compose.yml
 	.github\workflows\dev.yml = .github\workflows\dev.yml
-	.github\workflows\dev-deploy.yml = .github\workflows\dev-deploy.yml
 	.github\workflows\prerelease.yml = .github\workflows\prerelease.yml
 	.github\workflows\release.yml = .github\workflows\release.yml
 	.github\workflows\personal-dev-deploy.yml = .github\workflows\personal-dev-deploy.yml

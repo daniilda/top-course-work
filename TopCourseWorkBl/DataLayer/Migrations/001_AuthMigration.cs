@@ -26,9 +26,11 @@ namespace TopCourseWorkBl.DataLayer.Migrations
                 .WithColumn("token").AsString(8000)
                 .WithColumn("expires_at").AsDateTime()
                 .WithColumn("created_at").AsDateTime().WithDefault(SystemMethods.CurrentDateTime)
+                .WithColumn("created_by_ip").AsString(8000)
                 .WithColumn("revoked_at").AsDateTime().Nullable()
                 .WithColumn("revoked_by_ip").AsString().Nullable()
                 .WithColumn("replaced_by_token").AsString().Nullable();
+                
 
             Insert.IntoTable("roles").Row(new { role = "defaultAdmin", description = "SysAdmin" })
                 .Row(new { role = "user", description = "User" });

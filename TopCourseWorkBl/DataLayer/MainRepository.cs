@@ -2,7 +2,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using TopCourseWorkBl.DataLayer.Cmds.Main;
-using TopCourseWorkBl.DataLayer.Dto.Cmds;
 
 namespace TopCourseWorkBl.DataLayer
 {
@@ -19,11 +18,9 @@ namespace TopCourseWorkBl.DataLayer
             var query = $@"INSERT INTO {SqlConstants.TransactionsTable}
                             (customer_id, date, mcc_code, type, amount, terminal_id)
                             VALUES(@CustomerId, @DateTime, @TransactionMccCode, @TransactionType, @Amount, @TerminalId)";
-            if (insertCmd.Transactions == null)
-                return;
-            
-            await _dbExecuteWrapper.ExecuteQueryAsync(
-                query, insertCmd.Transactions!.Select(x=>
+
+            await _dbExecuteWrapper.ExecuteMultipliedQueryAsync(
+                query, insertCmd.Transactions.Select(x=>
                         new
                         {
                             x.CustomerId,
@@ -42,11 +39,9 @@ namespace TopCourseWorkBl.DataLayer
             var query = $@"INSERT INTO {SqlConstants.MccCodesTable}
                             (code, description)
                             VALUES(@MccCodeId, @Description)";
-            if (insertCmd.MccCodes == null)
-                return;
 
-            await _dbExecuteWrapper.ExecuteQueryAsync(
-                query, insertCmd.MccCodes!.Select(x=>
+            await _dbExecuteWrapper.ExecuteMultipliedQueryAsync(
+                query, insertCmd.MccCodes.Select(x=>
                     new
                     {
                         x.MccCodeId,
@@ -61,11 +56,9 @@ namespace TopCourseWorkBl.DataLayer
             var query = $@"INSERT INTO {SqlConstants.TypesTable}
                             (type, description)
                             VALUES(@TypeId, @Description)";
-            if (insertCmd.Types == null)
-                return;
-            
-            await _dbExecuteWrapper.ExecuteQueryAsync(
-                query, insertCmd.Types!.Select(x=>
+
+            await _dbExecuteWrapper.ExecuteMultipliedQueryAsync(
+                query, insertCmd.Types.Select(x=>
                     new
                     {
                         x.TypeId,
@@ -81,10 +74,7 @@ namespace TopCourseWorkBl.DataLayer
                             (id, gender)
                             VALUES(@CustomerId, @Gender)";
 
-            if (insertCmd.Customers == null)
-                return;
-            
-            await _dbExecuteWrapper.ExecuteQueryAsync(
+            await _dbExecuteWrapper.ExecuteMultipliedQueryAsync(
                 query, insertCmd.Customers.Select(x=>
                     new
                     {
@@ -92,7 +82,17 @@ namespace TopCourseWorkBl.DataLayer
                         x.Gender
                     })
                 , cancellationToken);
-        } 
+        }
 
+        public async Task CleanTablesWithDataAsync(CancellationToken cancellationToken)
+        {
+            var query = $@"DELETE FROM {SqlConstants.TransactionsTable};
+                                DELETE FROM {SqlConstants.CustomersTable};
+                                DELETE FROM {SqlConstants.TypesTable};
+                                DELETE FROM {SqlConstants.MccCodesTable}";
+
+            await _dbExecuteWrapper.ExecuteQueryAsync(query,
+                cancellationToken);
+        }
     }
 }

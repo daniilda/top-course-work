@@ -1,6 +1,7 @@
-﻿using TopCourseWorkBl.DataLayer.Dto;
+﻿using System.Collections.Generic;
+using TopCourseWorkBl.Dtos;
 
 namespace TopCourseWorkBl.DataLayer.Cmds.Main
 {
-    public record InsertTransactionsCmd(Transaction[]? Transactions);
+    public record InsertTransactionsCmd(List<Transaction> Transactions);
 }

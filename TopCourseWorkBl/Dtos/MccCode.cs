@@ -1,8 +1,10 @@
-﻿namespace TopCourseWorkBl.DataLayer.Dto
+﻿using CsvHelper.Configuration.Attributes;
+
+namespace TopCourseWorkBl.Dtos
 {
     public class MccCode
     {
-        public int MccCodeId { get; set; }
-        public string? Description { get; set; }
+        [Name("mcc_code")] public int MccCodeId { get; set; }
+        [Name("mcc_description")] public string? Description { get; set; }
     }
 }

@@ -18,7 +18,7 @@ DB_PASSWORD=application #DB Password
 DB_NAME=database #DB name
 DB_PORT=5432 #DB port
 DB_HOST=database #DB host link as here will be (database:5432)
-AUTH_KEY=somerandomkeyforjwttokens #Key for JWT auth service
+AUTH_TOKEN=somerandomkeyforjwttokens #Key for JWT auth service
 ```
 
 ### Booting up
@@ -29,3 +29,4 @@ To boot up the application type in the terminal:<br/>
 
 ### API deployments
 [:whale: Prerelease deploy](http://api.top-course-work.dev.daniilda.xyz/index.html)
+[:no_entry: Release deploy](http://api.top-course-work.daniilda.xyz/index.html)

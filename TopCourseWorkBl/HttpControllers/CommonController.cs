@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TopCourseWorkBl.AuthenticationLayer.Exceptions;
 using TopCourseWorkBl.BusinessLayer.Handlers.Common.UploadDataset;
 
 namespace TopCourseWorkBl.HttpControllers
@@ -26,11 +27,14 @@ namespace TopCourseWorkBl.HttpControllers
                 await _mediator.Send(request);
                 return Ok();
             }
+            catch (BadRequestException ex)
+            {
+                return BadRequest(ex.Message);
+            }
             catch (Exception ex)
             {
                 return StatusCode(500, ex.Message);
             }
-            
         }
         
     }

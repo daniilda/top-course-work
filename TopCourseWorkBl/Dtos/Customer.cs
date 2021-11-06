@@ -1,8 +1,10 @@
-﻿namespace TopCourseWorkBl.DataLayer.Dto
+﻿using CsvHelper.Configuration.Attributes;
+
+namespace TopCourseWorkBl.Dtos
 {
     public class Customer
     {
-       public long CustomerId { get; set; }
-       public bool? Gender { get; set; }
+        [Name("customer_id")] public long CustomerId { get; set; }
+        [Name("gender")] public bool? Gender { get; set; }
     }
 }

@@ -1,6 +1,7 @@
-﻿using TopCourseWorkBl.Dtos;
+﻿using System.Collections.Generic;
+using TopCourseWorkBl.Dtos;
 
 namespace TopCourseWorkBl.DataLayer.Cmds.Main
 {
-    public record InsertTypesCmd(Type[]? Types);
+    public record InsertTypesCmd(List<Type> Types);
 }

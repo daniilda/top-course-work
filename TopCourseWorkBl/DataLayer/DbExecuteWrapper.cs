@@ -29,6 +29,13 @@ namespace TopCourseWorkBl.DataLayer
             await using var db = _connectionFactory.CreateDatabase(cancellationToken);
             return (await db.Connection.QueryAsync<T>(db.CreateCommand(query, parameters))).ToArray();
         }
-        
+
+        public async Task ExecuteMultipliedQueryAsync(string query, object? parameters = null,
+            CancellationToken? cancellationToken = default)
+        {
+            await using var db = _connectionFactory.CreateDatabase(cancellationToken);
+            await db.Connection.ExecuteAsync(db.CreateCommand(query, parameters));
+        }
+
     }
 }

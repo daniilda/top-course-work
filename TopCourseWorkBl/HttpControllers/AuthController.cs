@@ -33,6 +33,10 @@ namespace TopCourseWorkBl.HttpControllers
                 Response.SetTokenCookie(response.RefreshToken);
                 return response;
             }
+            catch (BadRequestException ex)
+            {
+                return BadRequest(ex.Message);
+            }
             catch (Exception ex)
             {
                 return StatusCode(500, ex.Message);
@@ -49,6 +53,10 @@ namespace TopCourseWorkBl.HttpControllers
                 var response = await _mediator.Send(request);
                 Response.SetTokenCookie(response.RefreshToken);
                 return response;
+            }
+            catch (BadRequestException ex)
+            {
+                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
@@ -67,6 +75,10 @@ namespace TopCourseWorkBl.HttpControllers
                 var response = await _mediator.Send(new RefreshTokenCommand(refreshToken, HttpContext.GetIpAddress()));
                 Response.SetTokenCookie(response.RefreshToken, isExtended);
                 return Ok(response);
+            }
+            catch (BadRequestException ex)
+            {
+                return BadRequest(ex.Message);
             }
             catch (UnauthorizedException ex)
             {
@@ -87,6 +99,10 @@ namespace TopCourseWorkBl.HttpControllers
             {
                 await _mediator.Send(new RevokeAuthenticationCommand(refreshToken, HttpContext.GetIpAddress()));
                 return Ok();
+            }
+            catch (BadRequestException ex)
+            {
+                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {

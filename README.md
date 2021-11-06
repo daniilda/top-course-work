@@ -28,5 +28,5 @@ To boot up the application type in the terminal:<br/>
 :green_circle: `docker compose up -f docker-compose.prod.yml` which uses prod `docker-compose.prod.yml` config (use it for production)
 
 ### API deployments
-[:whale: Prerelease deploy](http://api.top-course-work.dev.daniilda.xyz/index.html)
+[:whale: Prerelease deploy](http://api.top-course-work.dev.daniilda.xyz/index.html)<br/>
 [:no_entry: Release deploy](http://api.top-course-work.daniilda.xyz/index.html)

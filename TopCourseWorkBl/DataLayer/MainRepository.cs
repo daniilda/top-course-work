@@ -19,7 +19,9 @@ namespace TopCourseWorkBl.DataLayer
         {
             var query = $@"INSERT INTO {SqlConstants.TransactionsTable}
                             (customer_id, date, mcc_code, type, amount, terminal_id)
-                            VALUES(@CustomerId, @DateTime, @TransactionMccCode, @TransactionType, @Amount, @TerminalId)";
+                            VALUES(@CustomerId, @DateTime, @TransactionMccCode, @TransactionType, @Amount, @TerminalId)
+                            ON CONFLICT 
+                            DO NOTHING;";
             
                 await _dbExecuteWrapper.ExecuteMultipliedQueryAsync(
                         query, insertCmd.Transactions.Select(x=> 
@@ -41,7 +43,9 @@ namespace TopCourseWorkBl.DataLayer
         {
             var query = $@"INSERT INTO {SqlConstants.MccCodesTable}
                             (code, description)
-                            VALUES(@MccCodeId, @Description)";
+                            VALUES(@MccCodeId, @Description)
+                            ON CONFLICT 
+                            DO NOTHING;";
             
             await _dbExecuteWrapper.ExecuteMultipliedQueryAsync(
                 query, insertCmd.MccCodes.Select(x =>
@@ -58,7 +62,9 @@ namespace TopCourseWorkBl.DataLayer
         {
             var query = $@"INSERT INTO {SqlConstants.TypesTable}
                             (type, description)
-                            VALUES(@TypeId, @Description)";
+                            VALUES(@TypeId, @Description)
+                            ON CONFLICT 
+                            DO NOTHING;";
 
             await _dbExecuteWrapper.ExecuteMultipliedQueryAsync(
                 query, insertCmd.Types.Select(x =>
@@ -75,7 +81,9 @@ namespace TopCourseWorkBl.DataLayer
         {
             var query = $@"INSERT INTO {SqlConstants.CustomersTable}
                             (id, gender)
-                            VALUES(@CustomerId, @Gender)";
+                            VALUES(@CustomerId, @Gender)
+                            ON CONFLICT 
+                            DO NOTHING;";
 
             await _dbExecuteWrapper.ExecuteMultipliedQueryAsync(
                 query, insertCmd.Customers.Select(x =>

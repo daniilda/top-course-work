@@ -21,28 +21,19 @@ namespace TopCourseWorkBl.DataLayer
                             (customer_id, date, mcc_code, type, amount, terminal_id)
                             VALUES(@CustomerId, @DateTime, @TransactionMccCode, @TransactionType, @Amount, @TerminalId)";
             
-            foreach (var transaction in insertCmd.Transactions)
-            {
-                try
-                {
-                    await _dbExecuteWrapper.ExecuteMultipliedQueryAsync(
-                        query,
+                await _dbExecuteWrapper.ExecuteMultipliedQueryAsync(
+                        query, insertCmd.Transactions.Select(x=> 
                         new
                         {
-                            transaction.CustomerId,
-                            transaction.DateTime,
-                            transaction.TransactionMccCode,
-                            transaction.TransactionType,
-                            transaction.Amount,
-                            transaction.TerminalId
-                        }
+                            x.CustomerId,
+                            x.DateTime,
+                            x.TransactionMccCode,
+                            x.TransactionType,
+                            x.Amount,
+                            x.TerminalId
+                        })
                         , cancellationToken);
-                }
-                catch
-                {
-                    continue;
-                }
-            }
+            
         }
 
         public async Task InsertMccCodesBulkAsync(InsertMccCodesCmd insertCmd,

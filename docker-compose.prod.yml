@@ -16,6 +16,12 @@ services:
       - postgresql_db:${DB_HOST}
     depends_on:
       - postgresql_db
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+        reservations:
+          memory: 128M
   postgresql_db:
     image: postgres:latest
     environment:
@@ -25,6 +31,8 @@ services:
     restart: always
     volumes:
       - "database-data:/var/lib/postgresql/data/"
+    ports:
+      - "6011:${DB_PORT}"
 
   pgadmin:
     image: dpage/pgadmin4

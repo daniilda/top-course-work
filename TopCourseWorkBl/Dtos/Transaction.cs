@@ -19,8 +19,8 @@ namespace TopCourseWorkBl.Dtos
         [Name("tr_type")]
         public int TransactionType { get; set; }
         [Name("amount")]
-        public int Amount { get; set; }
+        public decimal Amount { get; set; }
         [Name("term_id")]
-        public long TerminalId { get; set; }
+        public string? TerminalId { get; set; }
     }
 }

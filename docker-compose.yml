@@ -18,12 +18,21 @@ services:
       - postgresql_db
     volumes:
       - "app-data:/root/"
+    deploy:
+        resources:
+            limits:
+              memory: 256M
+            reservations:
+              memory: 128M
   postgresql_db:
     image: postgres:latest
     environment:
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
       - POSTGRES_DB=${DB_NAME}
+      - PGPORT=${DB_PORT}
+    ports:
+      - "6011:${DB_PORT}"    
     restart: always
     volumes:
       - "database-data:/var/lib/postgresql/data/"

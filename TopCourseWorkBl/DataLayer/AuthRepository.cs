@@ -99,8 +99,8 @@ namespace TopCourseWorkBl.DataLayer
             CancellationToken cancellationToken)
         {
             var query = $@"INSERT INTO {SqlConstants.RefreshTokensTable}
-                            (user_id, token, expires_at)
-                            VALUES(@UserId, @Token, @ExpiresAt);";
+                            (user_id, token, expires_at, created_by_ip)
+                            VALUES(@UserId, @Token, @ExpiresAt, @CreatedByIp);";
 
             await _dbExecuteWrapper.ExecuteQueryAsync(
                 query,
@@ -108,7 +108,8 @@ namespace TopCourseWorkBl.DataLayer
                 {
                     insertCmd.RefreshToken.UserId,
                     insertCmd.RefreshToken.Token,
-                    insertCmd.RefreshToken.ExpiresAt
+                    insertCmd.RefreshToken.ExpiresAt,
+                    insertCmd.RefreshToken.CreatedByIp
                 },
                 cancellationToken);
         }

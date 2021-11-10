@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using CsvHelper;
+using CsvHelper.Configuration;
 using TopCourseWorkBl.BusinessLayer.CsvParseStrategy.Abstractions;
 using TopCourseWorkBl.BusinessLayer.Extensions;
 using TopCourseWorkBl.Dtos;
@@ -19,7 +20,11 @@ namespace TopCourseWorkBl.BusinessLayer.CsvParseStrategy.Readers
                 : parser;
             returnData ??= data;
             using var reader = new StreamReader(data.Path);
-            using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
+            var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+            {
+                DetectDelimiter = true,
+            };
+            using var csv = new CsvReader(reader,config);
             csv.Read();
             csv.ReadHeader();
             if (csv.HeaderRecord[0].Equals("mcc_code"))

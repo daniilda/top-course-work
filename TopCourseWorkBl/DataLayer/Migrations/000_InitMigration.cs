@@ -23,12 +23,12 @@ namespace TopCourseWorkBl.DataLayer.Migrations
 
             Create.Table("transactions")
                 .WithColumn("id").AsInt64().PrimaryKey().Identity()
-                .WithColumn("customer_id").AsInt64().ForeignKey("customers", "id")
+                .WithColumn("customer_id").AsInt64() 
                 .WithColumn("date").AsDateTime()
-                .WithColumn("mcc_code").AsInt32().ForeignKey("codes", "code")
-                .WithColumn("type").AsInt32().ForeignKey("types", "type")
-                .WithColumn("amount").AsInt32()
-                .WithColumn("terminal_id").AsInt64();
+                .WithColumn("mcc_code").AsInt32()
+                .WithColumn("type").AsInt32()
+                .WithColumn("amount").AsDecimal()
+                .WithColumn("terminal_id").AsString(8000).Nullable();
         }
     }
 }

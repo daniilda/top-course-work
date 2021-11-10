@@ -31,7 +31,6 @@ namespace TopCourseWorkBl.AuthenticationLayer.Handlers.Auth.Authenticate
             _options = options;
         }
         
-
         public async Task<AuthenticateResponse> Handle(AuthenticateCommand request, CancellationToken cancellationToken)
         {
             var user = await _repository.GetUserByUsernameAsync(new GetUserByUsernameCmd(request.Username), cancellationToken);

@@ -95,7 +95,7 @@ namespace TopCourseWorkBl
             app.UseRouting();
 
             app.UseCors(x => x
-                .SetIsOriginAllowed(origin => true)
+                .AllowAnyOrigin()
                 .AllowAnyMethod()
                 .AllowAnyHeader()
                 .AllowCredentials());

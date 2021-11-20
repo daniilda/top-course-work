@@ -97,8 +97,7 @@ namespace TopCourseWorkBl
             app.UseCors(x => x
                 .AllowAnyOrigin()
                 .AllowAnyMethod()
-                .AllowAnyHeader()
-                .AllowCredentials());
+                .AllowAnyHeader());
             
             app.UseAuthentication();
             app.UseAuthorization();

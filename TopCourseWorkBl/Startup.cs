@@ -3,12 +3,14 @@ using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using TopCourseWorkBl.AuthenticationLayer;
 using TopCourseWorkBl.AuthenticationLayer.Extensions;
+using TopCourseWorkBl.BackgroundTasksService;
 using TopCourseWorkBl.DataLayer.Extensions;
 using TopCourseWorkBl.Extensions;
 using static TopCourseWorkBl.EnvironmentConstants;
@@ -38,11 +40,13 @@ namespace TopCourseWorkBl
                 .AddSingleton<HttpCancellationTokenAccessor>()
                 .AddDatabaseInfrastructure(_configuration);
 
-            services.AddControllers();
+            services
+                .AddHostedService<MainHostedService>()
+                .AddSingleton<TasksProvider>()
+                .AddSingleton<TaskStatusProcessor>()
+                .AddSingleton<BackgroundTaskProcessor>() ;
 
-            var authOptions = _configuration
-                .GetSection(nameof(AuthOptions))
-                .Get<AuthOptions>();
+            services.AddControllers();
 
             services.AddOptions<AuthOptions>()
                 .Configure(opt => _configuration
@@ -66,6 +70,12 @@ namespace TopCourseWorkBl
                         ClockSkew = TimeSpan.Zero
                     };
                 });
+
+            services.Configure<FormOptions>(x =>
+            {
+                x.ValueLengthLimit = int.MaxValue;
+                x.MultipartBodyLengthLimit = int.MaxValue;
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -85,10 +95,9 @@ namespace TopCourseWorkBl
             app.UseRouting();
 
             app.UseCors(x => x
-                .SetIsOriginAllowed(origin => true)
+                .AllowAnyOrigin()
                 .AllowAnyMethod()
-                .AllowAnyHeader()
-                .AllowCredentials());
+                .AllowAnyHeader());
             
             app.UseAuthentication();
             app.UseAuthorization();

@@ -1,12 +1,12 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 
 namespace TopCourseWorkBl.BusinessLayer.Handlers.Common.UploadDataset
 {
-    public record UploadDatasetCommand : IRequest<EmptyResult>
+    public record UploadDatasetCommand : IRequest
     {
         public IFormFileCollection Files { get; set; } = null!;
+        
     }
         
 }

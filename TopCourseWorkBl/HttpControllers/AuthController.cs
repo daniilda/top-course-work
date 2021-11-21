@@ -21,7 +21,8 @@ namespace TopCourseWorkBl.HttpControllers
 
         public AuthController(IMediator mediator)
             => _mediator = mediator;
-
+        
+        [Produces("application/json")] 
         [AllowAnonymous]
         [HttpPost("register")]
         public async Task<ActionResult<AuthenticateResponse>> Register([FromBody] RegisterUserCommand request)
@@ -43,6 +44,7 @@ namespace TopCourseWorkBl.HttpControllers
             }
         }
         
+        [Produces("application/json")] 
         [AllowAnonymous]
         [HttpPost("authenticate")]
         public async Task<ActionResult<AuthenticateResponse>> Authenticate([FromBody] AuthenticateCommand request)
@@ -63,9 +65,10 @@ namespace TopCourseWorkBl.HttpControllers
                 return StatusCode(500, ex.Message);
             }
         }
-
+        
+        [Produces("application/json")] 
         [AllowAnonymous]
-        [HttpPost("refresh-token")]
+        [HttpPost("refresh")]
         public async Task<ActionResult<AuthenticateResponse>> RefreshToken()
         {
             var refreshToken = Request.Cookies["refreshToken"] ?? "";
@@ -89,9 +92,9 @@ namespace TopCourseWorkBl.HttpControllers
                 return StatusCode(500, ex.Message);
             }
         }
-
+        
         [AllowAnonymous]
-        [HttpPatch("revoke-authentication")]
+        [HttpDelete("revoke")]
         public async Task<IActionResult> RevokeAuthentication()
         {
             var refreshToken = Request.Cookies["refreshToken"] ?? "";
